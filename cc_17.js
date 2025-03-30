@@ -43,4 +43,37 @@ class Customer {
       }
     }
   }
+
+  //Task 3  Create a VIPCustomer Class (extends Customer)
+  class VIPCustomer extends Customer {
+    constructor(name, email, vipLevel) {
+      this.name = name;
+      this.email = email;
+      this.purchaseHistory = [];  
+      this.vipLevel = vipLevel;
+      console.log(`New VIP customer created: ${this.name}, Level: ${this.vipLevel}`);
+    }
+  
+    addPurchase(amount) {
+      this.purchaseHistory.push(amount);
+      console.log(`${this.name} made a purchase of $${amount}`);
+    }
+  
+    getTotalSpent() {
+      const totalSpent = this.purchaseHistory.reduce((total, amount) => total + amount, 0);
+      const bonus = totalSpent * 0.10;  
+      const totalWithBonus = totalSpent + bonus;
+      
+      console.log(`${this.name} (VIP ${this.vipLevel}) has spent a total of $${totalWithBonus} including loyalty bonus.`);
+      return totalWithBonus;
+    }
+  }
+  
+  
+  const vipCustomer1 = new VIPCustomer("Alice Johnson", "alice@example.com", "Gold");
+  vipCustomer1.addPurchase(200);
+  vipCustomer1.addPurchase(150);
+  vipCustomer1.getTotalSpent();
+  
+  
   
