@@ -18,7 +18,7 @@ class Customer {
       return totalSpent;
     }
   }
-  
+  //Task 2 Create a SalesRep Class
   class SalesRep {
     constructor(name) {
       this.name = name;
