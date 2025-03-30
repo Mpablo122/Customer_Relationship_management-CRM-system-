@@ -1,80 +1,139 @@
-// task 1 
-// created customer class 
+// Task 1: Customer Class
 class Customer {
     constructor(name, email) {
-        this.name = name; // customer name 
-        this.email = email; // customer email 
-        this.purchaseHistory = []; // customer purchase amounts array 
+      this.name = name;
+      this.email = email;
+      this.purchaseHistory = [];
+      console.log(`New customer created: ${this.name}`);
     }
-    // adds purchase amount to purchaseHistory array 
+  
     addPurchase(amount) {
-        this.purchaseHistory.push(amount);
+      this.purchaseHistory.push(amount);
+      console.log(`${this.name} made a purchase of $${amount}`);
     }
-    // calculate and returns the total amount spent 
+  
     getTotalSpent() {
-        return this.purchaseHistory.reduce((total, amount) => total + amount, 0);
+      const totalSpent = this.purchaseHistory.reduce((total, amount) => total + amount, 0);
+      return totalSpent;
     }
-}
-
-// task 2 
-// created a sales rep class
-class SalesRep {
+  }
+  
+  // Task 2: SalesRep Class
+  class SalesRep {
     constructor(name) {
-        this.name = name; // sales rep name 
-        this.clients = []; // array of clients 
+      this.name = name;
+      this.clients = [];
+      console.log(`New sales rep created: ${this.name}`);
     }
-    // add customer to clients array 
+  
     addClient(customer) {
-        this.clients.push(customer);
+      this.clients.push(customer);
     }
-    // find client by name and return total amount spent 
+  
     getClientTotal(name) {
-        const client = this.clients.find(client => client.name === name);
-        return client ? client.getTotalSpent() : 0; // return total amount spent otherwise return 0 
+      const client = this.clients.find(client => client.name === name);
+      if (client) {
+        const totalSpent = client.getTotalSpent();
+        return totalSpent;
+      } else {
+        return null;
+      }
     }
-}
-// task 3 
-// created VIPCustomer class that extends Customer class
-class VIPCustomer extends Customer {
+  }
+  
+  // Task 3: VIPCustomer Class (extends Customer)
+  class VIPCustomer extends Customer {
     constructor(name, email, vipLevel) {
-        super(name, email); // retrieves name and email from customer class 
-        this.vipLevel = vipLevel; // viplevel of customers 
+      this.name = name;
+      this.email = email;
+      this.purchaseHistory = [];  // Initialize purchaseHistory property
+      this.vipLevel = vipLevel;
+      console.log(`New VIP customer created: ${this.name}, Level: ${this.vipLevel}`);
     }
-    // override getTotalSpent 
+  
+    addPurchase(amount) {
+      this.purchaseHistory.push(amount);
+      console.log(`${this.name} made a purchase of $${amount}`);
+    }
+  
     getTotalSpent() {
-        const totalSpent = super.getTotalSpent(); // calls parent class
-        const loyaltyBonus = totalSpent * 0.10; // calculate 10% loyalty bonus 
-        return totalSpent + loyaltyBonus; // return total spent with the bonus added 
+      const totalSpent = this.purchaseHistory.reduce((total, amount) => total + amount, 0);
+      const bonus = totalSpent * 0.10;  // 10% loyalty bonus
+      const totalWithBonus = totalSpent + bonus;
+      return totalWithBonus;
     }
-}
-// created customers regular and vip
-let customer1 = new Customer('Beth Anderson', 'beth.andy@gmail.com');
-let customer2 = new Customer('Jonas Richy', 'richy3345@mgail.com');
-let vipCustomer1 = new VIPCustomer('Andy Johnson', 'johnson.a23@gmail.com', 'Gold');
-let vipCustomer2 = new VIPCustomer('Janet Brown', 'j.brown482@gmail.com', 'Platinum');
-// added purchases to customers 
-customer1.addPurchase(34);
-customer2.addPurchase(56);
-vipCustomer1.addPurchase(590);
-vipCustomer1.addPurchase(90);
-vipCustomer2.addPurchase(120);
-// created sales rep and added customers to their client list 
-const salesRep1 = new SalesRep('Alex Micheal');
-salesRep1.addClient(customer1);
-salesRep1.addClient(customer2);
-salesRep1.addClient(vipCustomer1);
-salesRep1.addClient(vipCustomer2);
-// calculate total revenue from all customers
-const totalRevenue = salesRep1.clients.reduce((total, client) => total + client.getTotalSpent(), 0);
-console.log(`Total revenue from all customers: $${totalRevenue}`);
-// find customers who spent more than $500
-const highSpenders = salesRep1.clients.filter(client => client.getTotalSpent() > 500);
-console.log(`Customers who spent over $500:`);
-highSpenders.forEach(client => console.log(`${client.name}: $${client.getTotalSpent()}`));
-// created an array of customer names and total spent 
-const customerSpending = salesRep1.clients.map(client => ({
-    name: client.name,
-    totalSpent: client.getTotalSpent()
-}));
-console.log('Customer names and total spent:');
-customerSpending.forEach(client => console.log(`${client.name}: $${client.totalSpent}`));
+  }
+  
+  // Task 4: Client Report System
+  
+  // Sample customer data (regular and VIP)
+  const customers = [
+    new Customer("John Doe", "john@example.com"),
+    new VIPCustomer("Alice Johnson", "alice@example.com", "Gold"),
+    new Customer("Jane Smith", "jane@example.com"),
+    new VIPCustomer("Robert Brown", "robert@example.com", "Platinum")
+  ];
+  
+  // Add some purchases to customers
+  customers[0].addPurchase(200);
+  customers[0].addPurchase(50);
+  
+  customers[1].addPurchase(300);
+  customers[1].addPurchase(150);
+  
+  customers[2].addPurchase(100);
+  customers[2].addPurchase(200);
+  
+  customers[3].addPurchase(500);
+  customers[3].addPurchase(250);
+  
+  // Sample sales rep
+  const salesRep = new SalesRep("Emma Green");
+  salesRep.addClient(customers[0]);
+  salesRep.addClient(customers[1]);
+  salesRep.addClient(customers[2]);
+  salesRep.addClient(customers[3]);
+  
+  // Calculate total revenue from all customers using reduce()
+  const totalRevenue = customers.reduce((total, customer) => {
+    return total + customer.getTotalSpent();
+  }, 0);
+  
+  // Find customers who spent over $500 using filter()
+  const highSpendingCustomers = customers.filter(customer => customer.getTotalSpent() > 500);
+  
+  // Map customer names and total spent using map()
+  const customerSummary = customers.map(customer => {
+    return {
+      name: customer.name,
+      totalSpent: customer.getTotalSpent()
+    };
+  });
+  
+  // DOM Manipulation: Update HTML
+  
+  // Total Revenue Display
+  const totalRevenueElement = document.createElement('p');
+  totalRevenueElement.innerText = `Total Revenue: $${totalRevenue.toFixed(2)}`;
+  document.body.appendChild(totalRevenueElement);
+  
+  // High-Spending Customers
+  const highSpendingList = document.createElement('ul');
+  highSpendingList.innerHTML = '<h3>High-Spending Customers (Over $500):</h3>';
+  highSpendingCustomers.forEach(customer => {
+    const listItem = document.createElement('li');
+    listItem.innerText = `${customer.name}: $${customer.getTotalSpent().toFixed(2)}`;
+    highSpendingList.appendChild(listItem);
+  });
+  document.body.appendChild(highSpendingList);
+  
+  // Customer Summary
+  const customerSummaryList = document.createElement('ul');
+  customerSummaryList.innerHTML = '<h3>Customer Summary:</h3>';
+  customerSummary.forEach(summary => {
+    const listItem = document.createElement('li');
+    listItem.innerText = `${summary.name}: $${summary.totalSpent.toFixed(2)}`;
+    customerSummaryList.appendChild(listItem);
+  });
+  document.body.appendChild(customerSummaryList);
+  
