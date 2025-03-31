@@ -41,7 +41,7 @@ class Customer {
     }
   }
   
-  // Task 3: VIPCustomer Class (extends Customer)
+  // Task 3: VIPCustomer Class
   class VIPCustomer extends Customer {
     constructor(name, email, vipLevel) {
       this.name = name;
